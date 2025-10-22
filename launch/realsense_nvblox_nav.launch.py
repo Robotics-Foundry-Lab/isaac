@@ -18,7 +18,7 @@
 from isaac_ros_launch_utils.all_types import *
 import isaac_ros_launch_utils as lu
 
-from nvblox_ros_python_utils.nvblox_launch_utils import NvbloxMode, NvbloxCamera, NvbloxPeopleSegmentation
+from nvblox_ros_python_utils.nvblox_launch_utils import NvbloxMode, NvbloxCamera
 from nvblox_ros_python_utils.nvblox_constants import NVBLOX_CONTAINER_NAME
 
 
@@ -31,15 +31,6 @@ def generate_launch_description() -> LaunchDescription:
         default=NvbloxMode.static,
         choices=NvbloxMode.names(),
         description='The nvblox mode.',
-        cli=True)
-    args.add_arg(
-        'people_segmentation',
-        default=NvbloxPeopleSegmentation.peoplesemsegnet_vanilla,
-        choices=[
-            str(NvbloxPeopleSegmentation.peoplesemsegnet_vanilla),
-            str(NvbloxPeopleSegmentation.peoplesemsegnet_shuffleseg)
-        ],
-        description='The  model type of PeopleSemSegNet (only used when mode:=people_segmentation).',
         cli=True)
     actions = args.get_launch_actions()
 

@@ -6,9 +6,6 @@
   <description>TODO: Package description</description>
   <maintainer email="labor@todo.todo">labor</maintainer>
   <license>TODO: License declaration</license>
-
-  <exec_depend>slam_toolbox</exec_depend>
-  <exec_depend>robot_localization</exec_depend>
   
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

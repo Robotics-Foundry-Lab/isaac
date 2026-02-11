@@ -46,24 +46,32 @@ def add_vslam(args: lu.ArgumentContainer) -> List[Action]:
     base_parameters = {
         'num_cameras': 2,
         'min_num_images': 2,
-        'enable_localization_n_mapping': False,
+        'rig_frame': 'base_link',
+        'verbosity': 5,
+        'enable_debug_mode': False,
+        'enable_imu_fusion': False,
         'gyro_noise_density': 0.000244,
         'gyro_random_walk': 0.000019393,
         'accel_noise_density': 0.001862,
         'accel_random_walk': 0.003,
         'calibration_frequency': 200.0,
-        'rig_frame': 'base_link',
-        'imu_frame': 'front_stereo_camera_imu',
+        'image_jitter_threshold_ms': 40.00,
+        'base_frame': base_frame,
         'enable_slam_visualization': True,
         'enable_landmarks_view': True,
         'enable_observations_view': True,
+        'enable_ground_constraint_in_odometry': True,
+        'enable_ground_constraint_in_slam': True,
+        'enable_localization_n_mapping': False,
+
+
+        'publish_map_to_odom_tf': False,
+        'publish_odom_to_base_tf': False,
+
+
         'path_max_size': 200,
-        'verbosity': 5,
-        'enable_debug_mode': False,
-        'debug_dump_path': '/tmp/cuvslam',
         'map_frame': 'map',
-        'odom_frame': 'odom',
-        'base_frame': base_frame,
+        'odom_frame': 'odom'
     }
     realsense_parameters = {
         'enable_rectified_pose': True,
@@ -85,9 +93,6 @@ def add_vslam(args: lu.ArgumentContainer) -> List[Action]:
     parameters = []
     parameters.append(base_parameters)
     parameters.append(camera_parameters)
-    parameters.append(
-        {'enable_ground_constraint_in_odometry': args.enable_ground_constraint_in_odometry})
-    parameters.append({'enable_imu_fusion': args.enable_imu_fusion})
 
     vslam_node = ComposableNode(
         name='visual_slam_node',

@@ -45,19 +45,19 @@ def generate_launch_description() -> LaunchDescription:
                 'camera_serial_numbers': '',
                 'num_cameras': 1,
             }))
-
-    # Visual SLAM
-    actions.append(
-        lu.include(
-            'launch_robot',
-            'launch/perception/vslam.launch.py',
-            launch_arguments={
-                'container_name': NVBLOX_CONTAINER_NAME,
-                'camera': camera_mode,
-            },
-            # Delay for 1 second to make sure that the static topics from the rosbag are published.
-            delay=1.0,
-        ))
+    
+    # # Visual SLAM
+    # actions.append(
+    #     lu.include(
+    #         'launch_robot',
+    #         'launch/perception/vslam.launch.py',
+    #         launch_arguments={
+    #             'container_name': NVBLOX_CONTAINER_NAME,
+    #             'camera': camera_mode,
+    #         },
+    #         # Delay for 1 second to make sure that the static topics from the rosbag are published.
+    #         delay=1.0,
+    #     ))
 
     # Nvblox
     actions.append(
@@ -69,6 +69,12 @@ def generate_launch_description() -> LaunchDescription:
                 'camera': camera_mode,
                 'num_cameras': 1,
             }))
+
+    # Start the lidar navigation launch, which includes the SLAM toolbox node and Nav2.
+    actions.append(
+        lu.include(
+            'launch_robot',
+            'launch/lidar_nav.launch.py'))
 
     # Visualization
     actions.append(
@@ -85,11 +91,5 @@ def generate_launch_description() -> LaunchDescription:
         lu.component_container(
             NVBLOX_CONTAINER_NAME,
             log_level=args.log_level))
-
-    # Nav2 
-    actions.append(
-        lu.include(
-            'launch_robot',
-            'launch/nav2/nav2_realsense.launch.py'))
 
     return LaunchDescription(actions)

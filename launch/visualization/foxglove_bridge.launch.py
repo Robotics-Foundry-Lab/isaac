@@ -30,6 +30,8 @@ TOPIC_WHITELIST = [
     '/nvblox_node/static_esdf_pointcloud',
     '/nvblox_node/human_voxels',
     '/local_costmap/costmap',
+    '/global_costmap/costmap',
+    '/map',
     # tf
     '/tf',
     '/tf_static',

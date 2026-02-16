@@ -45,7 +45,9 @@ TOPIC_WHITELIST = [
     '/visual_slam/vis/observations_cloud',
     # Camera
     '/camera0/color/image_raw/compressed',
-    '/camera0/color/camera_info'
+    '/camera0/color/camera_info',
+    # Object detection
+    '/yolov8_processed_image/compressed'
 ]
 
 

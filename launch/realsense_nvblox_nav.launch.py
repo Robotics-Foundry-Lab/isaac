@@ -36,7 +36,7 @@ def generate_launch_description() -> LaunchDescription:
 
     # Single realsense
     camera_mode = NvbloxCamera.realsense
-
+    
     actions.append(
         lu.include(
             'launch_robot',
@@ -91,5 +91,27 @@ def generate_launch_description() -> LaunchDescription:
         lu.component_container(
             NVBLOX_CONTAINER_NAME,
             log_level=args.log_level))
-
+    
+    actions.append(Node(
+                    package='topic_tools',
+                    executable='relay',
+                    name='image_relay',
+                    arguments=[
+                        '/camera0/color/image_raw',
+                        '/image_rect'
+                    ],
+                    output='screen'
+                ))
+            
+    actions.append(Node(
+                    package='topic_tools',
+                    executable='relay',
+                    name='camera_info_relay',
+                    arguments=[
+                        '/camera0/color/camera_info',
+                        '/camera_info_rect'
+                    ],
+                    output='screen'
+                ))
+    
     return LaunchDescription(actions)

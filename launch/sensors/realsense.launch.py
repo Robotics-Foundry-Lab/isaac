@@ -42,11 +42,19 @@ def get_camera_node(camera_name: str, config_file_path: str, serial_number: Opti
     parameters.append({'camera_name': camera_name})
     if serial_number:
         parameters.append({'serial_no': str(serial_number)})
+    
+    #if camera_name == 'camera0':
     realsense_node = ComposableNode(
         namespace=camera_name,
         package='realsense2_camera',
         plugin='realsense2_camera::RealSenseNodeFactory',
         parameters=parameters)
+    # else:
+    #     realsense_node = ComposableNode(
+    #         namespace=camera_name,
+    #         package='realsense2_camera',
+    #         plugin='realsense2_camera::RealSenseNodeFactory',
+    #         parameters=parameters)
     return realsense_node
 
 
@@ -114,6 +122,20 @@ def add_cameras(args: lu.ArgumentContainer) -> List[Action]:
                 get_splitter_node(
                     camera_name=camera_name,
             ))
+            
+            # nodes.append(ComposableNode(
+            #     package='isaac_ros_image_proc',
+            #     plugin='nvidia::isaac_ros::MessageRelay',
+            #     name='image_relay_node',
+            #     remappings=[(f'{camera_name}/color/image_raw', '/image_rect'),
+            #                 (f'{camera_name}/color/camera_info', '/camera_info_rect')],
+            #     parameters=[
+            #         {'qos_overrides./input.reliability': 'reliable'},
+            #         {'qos_overrides./output.reliability': 'reliable'}
+            #     ]
+            # ))
+            
+
         # Note(xinjieyao: 2024/08/24): Multi-rs launch use RealSenseNodeFactory could be unstable
         # Camera node may fail to launch without any ERROR or app crashes
         # Adding delay for cameras after the first camera bringup (including splitter) as temp fix

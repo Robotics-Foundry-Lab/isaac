@@ -25,7 +25,7 @@ def generate_launch_description():
                 'scan_topic': '/scan',
 
                 'maximum_angular_velocity': 0.1,
-                'minimum_travel_distance': 0.01,
+                # 'minimum_travel_distance': 0.01,
                 # 'minimum_travel_heading': 0.35,
 
                 # Map
@@ -55,7 +55,7 @@ def generate_launch_description():
 
                 'ceres_scan_matcher': {
                     'translation_weight': 10.0,
-                    'rotation_weight': 15.0,   # ↓↓↓ reduces trust in bad odom yaw
+                    'rotation_weight': 15.0,
                     'max_iterations': 100
                 }
 

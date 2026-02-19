@@ -47,7 +47,10 @@ TOPIC_WHITELIST = [
     '/camera0/color/image_raw/compressed',
     '/camera0/color/camera_info',
     # Object detection
-    '/yolov8_processed_image/compressed'
+    '/yolov8_processed_image/compressed',
+    # Navigation
+    '/plan',
+    '/plan_smoothed'
 ]
 
 

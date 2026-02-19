@@ -25,7 +25,7 @@ def generate_launch_description():
                 'scan_topic': '/scan',
 
                 'maximum_angular_velocity': 0.1,
-                # 'minimum_travel_distance': 0.01,
+                'minimum_travel_distance': 0.01,
                 # 'minimum_travel_heading': 0.35,
 
                 # Map
@@ -77,16 +77,6 @@ def generate_launch_description():
                           'params_file': nav2_param_file,
                           'autostart': 'True'}.items())
 
-    ekf_param_file = os.path.join(bringup_dir,
-                                   'config', 'filtering', 'ekf_imu_wheel.yaml')
 
-    ekf_smooting = Node(
-            package='robot_localization',
-            executable='ekf_node',
-            name='ekf_filter_node',
-            output='screen',
-            parameters=[ekf_param_file]
-        )
-
-    return LaunchDescription([ekf_smooting, nav2_launch, slam_toobox])
+    return LaunchDescription([nav2_launch, slam_toobox])
     

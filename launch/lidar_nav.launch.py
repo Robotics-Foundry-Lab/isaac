@@ -7,8 +7,11 @@ from launch_ros.actions import Node
 
 import os
 from ament_index_python.packages import get_package_share_directory
+from launch.substitutions import LaunchConfiguration, PythonExpression
 
 def generate_launch_description():
+
+    use_nvblox = LaunchConfiguration('use_nvblox')
 
     slam_toobox = Node(
             package='slam_toolbox',
@@ -65,9 +68,19 @@ def generate_launch_description():
     bringup_dir = get_package_share_directory('launch_robot')
     nav2_bringup_dir = get_package_share_directory('nav2_bringup')
 
+
     # Config file
-    nav2_param_file = os.path.join(bringup_dir,
+    lidar_nav2_param_file = os.path.join(bringup_dir,
                                    'config', 'nav2', 'nav2_lidar.yaml')
+
+    nvblox_nav2_param_file = os.path.join(bringup_dir,
+                                   'config', 'nav2', 'nav2_nvblox.yaml')
+
+    nav2_param_file = PythonExpression([
+        f"'{nvblox_nav2_param_file}' if '",
+        use_nvblox,
+        f"' == 'true' else '{lidar_nav2_param_file}'"
+    ])
 
     # Nav2 launch
     nav2_launch = IncludeLaunchDescription(

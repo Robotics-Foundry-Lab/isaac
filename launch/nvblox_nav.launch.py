@@ -59,7 +59,10 @@ def add_optional_nodes(context, *args, **kwargs):
         actions.append(
             lu.include(
                 'launch_robot',
-                'launch/lidar_nav.launch.py'))
+                'launch/lidar_nav.launch.py',
+                launch_arguments={
+                    'nvblox_costmap': use_nvblox
+                }))
 
 
     return actions

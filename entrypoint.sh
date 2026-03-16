@@ -3,4 +3,4 @@
 source /opt/ros/humble/setup.bash
 source /opt/ros_ws/install/setup.bash
 source /workspace/install/setup.bash
-ros2 launch launch_robot realsense_nvblox_nav.launch.py
+ros2 launch launch_robot nvblox_nav.launch.py use_vslam:=true use_nvblox:=true use_navigation:=true

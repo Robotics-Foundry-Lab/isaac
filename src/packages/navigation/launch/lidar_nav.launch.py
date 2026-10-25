@@ -65,7 +65,7 @@ def generate_launch_description():
             }]
         )
     
-    bringup_dir = get_package_share_directory('isaac')
+    bringup_dir = get_package_share_directory('navigation')
     nav2_bringup_dir = get_package_share_directory('nav2_bringup')
 
 

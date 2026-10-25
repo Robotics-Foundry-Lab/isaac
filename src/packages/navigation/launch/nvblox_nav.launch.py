@@ -33,7 +33,7 @@ def add_optional_nodes(context, *args, **kwargs):
     if use_vslam:
         actions.append(
             lu.include(
-                'isaac',
+                'navigation',
                 'launch/perception/vslam.launch.py',
                 launch_arguments={
                     'container_name': NVBLOX_CONTAINER_NAME,
@@ -45,7 +45,7 @@ def add_optional_nodes(context, *args, **kwargs):
     if use_nvblox:
         actions.append(
             lu.include(
-                'isaac',
+                'navigation',
                 'launch/perception/nvblox.launch.py',
                 launch_arguments={
                     'mode': 'static',
@@ -58,7 +58,7 @@ def add_optional_nodes(context, *args, **kwargs):
     if use_navigation:
         actions.append(
             lu.include(
-                'isaac',
+                'navigation',
                 'launch/lidar_nav.launch.py',
                 launch_arguments={
                     'nvblox_costmap': use_nvblox
@@ -93,7 +93,7 @@ def generate_launch_description() -> LaunchDescription:
     # Sensors
     actions.append(
         lu.include(
-            'isaac',
+            'navigation',
             'launch/sensors/realsense.launch.py',
             launch_arguments={
                 'camera_serial_numbers': '',
@@ -106,7 +106,7 @@ def generate_launch_description() -> LaunchDescription:
     # Visualization
     actions.append(
         lu.include(
-            'isaac',
+            'navigation',
             'launch/visualization/visualization.launch.py',
             launch_arguments={
                 'mode': args.mode,
@@ -114,7 +114,7 @@ def generate_launch_description() -> LaunchDescription:
                 'use_foxglove_whitelist': False,
             }))
 
-    ekf_param_file = os.path.join(get_package_share_directory('isaac'),
+    ekf_param_file = os.path.join(get_package_share_directory('navigation'),
                                    'config', 'filtering', 'ekf.yaml')
 
     actions.append(Node(

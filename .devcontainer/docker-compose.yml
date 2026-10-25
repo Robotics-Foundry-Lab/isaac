@@ -1,12 +1,12 @@
 services:
-  isaac_ros:
+  navigation:
     build:
       context: ..                # build context is parent folder
       dockerfile: .devcontainer/Dockerfile
       args:
         WORKSPACE: ${WORKSPACE:-/workspace}
     runtime: nvidia
-    container_name: isaac_ros
+    container_name: navigation
     network_mode: host
     privileged: true
     ipc: host

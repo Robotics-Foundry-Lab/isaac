@@ -1,4 +1,4 @@
-# isaac
+# navigation
 Launch files for the robot platform within the Isaac ROS container. They depend on Isaac ROS packages (`isaac_ros_launch_utils`, NVBLOX, VSLAM) and therefore only run inside this container.
 
 ## Launch files
@@ -13,5 +13,5 @@ Launch files for the robot platform within the Isaac ROS container. They depend 
 | `launch/nav2/nav2_realsense.launch.py` | Unused and currently broken: references `config/nav2/nav2_realsense.yaml`, which no longer exists. |
 | `launch/visualization/*.launch.py` | Foxglove bridge / visualization. |
 
-## Relation to the `navigation` repository
-A standalone lidar navigation without any Isaac dependencies (slam_toolbox + EKF with wheel odometry and IMU only) lives in the `navigation` repository (`robot_navigation` package). Both variants are maintained separately on purpose: changes to footprint, inflation or EKF settings have to be applied to both if they should stay in sync.
+## Relation to the `lidar_navigation` repository
+A standalone lidar navigation without any Isaac dependencies (slam_toolbox + EKF with wheel odometry and IMU only) lives in the `lidar_navigation` repository (`robot_navigation` package). Both variants are maintained separately on purpose: changes to footprint, inflation or EKF settings have to be applied to both if they should stay in sync.

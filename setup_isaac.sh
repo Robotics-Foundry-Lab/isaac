@@ -1,27 +1,27 @@
 #!/bin/bash
 set -e
 
-mkdir -p /workspaces/isaac/src/isaac_utils
+mkdir -p /workspaces/navigation/src/isaac_utils
 
-if [ ! -d /workspaces/isaac/src/isaac_utils/isaac_ros_nvblox ]; then
-        git clone --recurse-submodules -b release-3.2 https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_nvblox.git /workspaces/isaac/src/isaac_utils/isaac_ros_nvblox && \
-                cd /workspaces/isaac/src/isaac_utils/isaac_ros_nvblox && \
+if [ ! -d /workspaces/navigation/src/isaac_utils/isaac_ros_nvblox ]; then
+        git clone --recurse-submodules -b release-3.2 https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_nvblox.git /workspaces/navigation/src/isaac_utils/isaac_ros_nvblox && \
+                cd /workspaces/navigation/src/isaac_utils/isaac_ros_nvblox && \
                 git lfs pull
-        rm /workspaces/isaac/src/isaac_utils/isaac_ros_nvblox/nvblox_examples/realsense_splitter/COLCON_IGNORE
+        rm /workspaces/navigation/src/isaac_utils/isaac_ros_nvblox/nvblox_examples/realsense_splitter/COLCON_IGNORE
 fi
 
-if [ ! -d /workspaces/isaac/src/isaac_utils/isaac_ros_common ]; then
-        git clone -b release-3.2 https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common.git /workspaces/isaac/src/isaac_utils/isaac_ros_common
+if [ ! -d /workspaces/navigation/src/isaac_utils/isaac_ros_common ]; then
+        git clone -b release-3.2 https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common.git /workspaces/navigation/src/isaac_utils/isaac_ros_common
 fi
 
-if [ -f /workspaces/isaac/install/setup.bash ]; then
-        source /workspaces/isaac/install/setup.bash
+if [ -f /workspaces/navigation/install/setup.bash ]; then
+        source /workspaces/navigation/install/setup.bash
 fi
 
 # Set the default build type
 BUILD_TYPE=RelWithDebInfo
 colcon build \
-        --base-paths /workspaces/isaac/src/isaac_utils \
+        --base-paths /workspaces/navigation/src/isaac_utils \
         --merge-install \
         --executor sequential \
         --packages-skip-build-finished \

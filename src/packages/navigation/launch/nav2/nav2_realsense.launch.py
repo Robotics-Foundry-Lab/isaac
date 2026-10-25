@@ -26,7 +26,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
 
-    nvblox_bringup_dir = get_package_share_directory('isaac')
+    nvblox_bringup_dir = get_package_share_directory('navigation')
     nav2_bringup_dir = get_package_share_directory('nav2_bringup')
 
     # Config file

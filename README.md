@@ -1,6 +1,6 @@
-# Isaac
+# Navigation
 
-This container controls various NVIDIA Isaac ros packages, such as visual slam (https://nvidia-isaac-ros.github.io/v/release-3.2/repositories_and_packages/isaac_ros_visual_slam/isaac_ros_visual_slam/index.html) and NVBLOX (https://nvidia-isaac-ros.github.io/v/release-3.2/repositories_and_packages/isaac_ros_nvblox/index.html).
+This container runs the navigation of the robot (slam_toolbox, EKF, Nav2) and optionally various NVIDIA Isaac ros packages, such as visual slam (https://nvidia-isaac-ros.github.io/v/release-3.2/repositories_and_packages/isaac_ros_visual_slam/isaac_ros_visual_slam/index.html) and NVBLOX (https://nvidia-isaac-ros.github.io/v/release-3.2/repositories_and_packages/isaac_ros_nvblox/index.html).
 
 # Prerequisites
 
@@ -12,7 +12,7 @@ This container controls various NVIDIA Isaac ros packages, such as visual slam (
 
 # Usage
 
-You can build and start the container in the ".devcontainer" folder via "docker compose up --build". The container runs "entrypoint.sh", which calls the launch file "isaac nvblox_nav.launch.py". The features are selected via environment variables (default: all `true`):
+You can build and start the container in the ".devcontainer" folder via "docker compose up --build". The container runs "entrypoint.sh", which calls the launch file "navigation nvblox_nav.launch.py". The features are selected via environment variables (default: all `true`):
 
 | Variable | Feature |
 | --- | --- |

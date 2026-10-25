@@ -34,7 +34,7 @@ def generate_launch_description() -> LaunchDescription:
 
     actions.append(
         lu.include(
-            'isaac',
+            'navigation',
             'launch/visualization/foxglove_bridge.launch.py'))
 
     return LaunchDescription(actions)

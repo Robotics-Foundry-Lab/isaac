@@ -4,7 +4,7 @@
 # Example:
 ############
 repositories:
-  launch_robot:
-     type: git
-     url: https://github.com/Robo-Hobo-Jet/launch_robot.git
-    
+  # some_repo:
+  #   type: git
+  #   url: https://github.com/<org>/<repo>.git
+  #   version: main

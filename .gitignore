@@ -222,3 +222,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Isaac ROS sources cloned by setup_isaac.sh
+src/isaac_utils/

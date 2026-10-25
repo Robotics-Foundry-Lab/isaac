@@ -12,4 +12,12 @@ This container controls various NVIDIA Isaac ros packages, such as visual slam (
 
 # Usage
 
-You can build and start the container in the ".devcontainer" folder via "docker compose up --build". In the docker-compose.yml the entrypoint is defined for the container. The default is the "entry_point.sh", which can start NVBLOX, VSlam and navigation. If you look into the entry_point.sh you can see that a launch file "isaac nvblox_nav.launch.py" is called. If you want to start indepedent features, such as NVBLOX, VSlam etc. you can select or deselect those features.
+You can build and start the container in the ".devcontainer" folder via "docker compose up --build". The container runs "entrypoint.sh", which calls the launch file "isaac nvblox_nav.launch.py". The features are selected via environment variables (default: all `true`):
+
+| Variable | Feature |
+| --- | --- |
+| `USE_VSLAM` | Isaac ROS visual SLAM |
+| `USE_NVBLOX` | NVBLOX 3D reconstruction and costmap |
+| `USE_NAVIGATION` | slam_toolbox + EKF + Nav2 |
+
+Example: `USE_NVBLOX=false USE_NAVIGATION=false docker compose up --build`

@@ -83,6 +83,7 @@ def generate_launch_description() -> LaunchDescription:
     launch_args = [
         DeclareLaunchArgument('use_nvblox', default_value='true'),
         DeclareLaunchArgument('use_vslam', default_value='true'),
+        DeclareLaunchArgument('use_navigation', default_value='true'),
     ]
 
     actions = launch_args + args.get_launch_actions()

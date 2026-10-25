@@ -15,7 +15,12 @@ services:
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined
+    init: true # forwards docker stop to ros2 launch and reaps zombie processes
     environment:
+      # Override per run, e.g.: USE_NVBLOX=false USE_NAVIGATION=false docker compose up
+      USE_VSLAM: ${USE_VSLAM:-true} # true / false: Isaac ROS visual SLAM
+      USE_NVBLOX: ${USE_NVBLOX:-true} # true / false: NVBLOX 3D reconstruction and costmap
+      USE_NAVIGATION: ${USE_NAVIGATION:-true} # true / false: slam_toolbox + EKF + Nav2
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: all
       DISPLAY: ${DISPLAY}
@@ -30,4 +35,4 @@ services:
       - /mnt/wslg:/mnt/wslg
       - ../:/workspace:cached
 
-    command: /workspace/entrypoint.sh
+    command: ["bash", "/workspace/entrypoint.sh"]

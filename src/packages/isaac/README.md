@@ -1,4 +1,4 @@
-# launch_robot
+# isaac
 Launch files for the robot platform within the Isaac ROS container. They depend on Isaac ROS packages (`isaac_ros_launch_utils`, NVBLOX, VSLAM) and therefore only run inside this container.
 
 ## Launch files

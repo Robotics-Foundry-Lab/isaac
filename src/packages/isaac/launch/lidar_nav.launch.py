@@ -65,7 +65,7 @@ def generate_launch_description():
             }]
         )
     
-    bringup_dir = get_package_share_directory('launch_robot')
+    bringup_dir = get_package_share_directory('isaac')
     nav2_bringup_dir = get_package_share_directory('nav2_bringup')
 
 

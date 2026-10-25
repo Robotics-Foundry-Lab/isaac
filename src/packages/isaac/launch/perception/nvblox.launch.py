@@ -104,8 +104,8 @@ def add_nvblox(args: lu.ArgumentContainer) -> List[Action]:
     if camera == NvbloxCamera.realsense:
         assert args.num_cameras == 1, 'NvbloxCamera.realsense shall only be set for num_cameras==1'
 
-    base_config = lu.get_path('launch_robot', 'config/nvblox/nvblox_base.yaml')
-    realsense_config = lu.get_path('launch_robot',
+    base_config = lu.get_path('isaac', 'config/nvblox/nvblox_base.yaml')
+    realsense_config = lu.get_path('isaac',
                                    'config/nvblox/specializations/nvblox_realsense.yaml')
 
     mode_config = {}

@@ -19,6 +19,10 @@ def generate_launch_description():
             executable='async_slam_toolbox_node',
             name='slam_toolbox',
             output='screen',
+            # "Reset 2D map" in the feature manager ends this process to start over with an empty
+            # map (slam_toolbox in Humble has no reset service); the respawn brings it back
+            respawn=True,
+            respawn_delay=1.0,
             parameters=[{
                 # Frames
                 'use_sim_time': False,

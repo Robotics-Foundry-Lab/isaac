@@ -58,9 +58,9 @@ bt_navigator:
     enable_groot_monitoring: True
     groot_zmq_publisher_port: 1666
     groot_zmq_server_port: 1667
-    # More retries and faster BackUp than the Nav2 default, see the comment in the XML.
-    # 'default_nav_through_poses_bt_xml' still uses the Nav2 default.
+    # More retries, faster replanning and faster BackUp than the Nav2 default, see the XML comments
     default_nav_to_pose_bt_xml: "$(find-pkg-share navigation)/config/behavior_trees/navigate_to_pose_aggressive.xml"
+    default_nav_through_poses_bt_xml: "$(find-pkg-share navigation)/config/behavior_trees/navigate_through_poses_aggressive.xml"
     plugin_lib_names:
       - nav2_compute_path_to_pose_action_bt_node
       - nav2_compute_path_through_poses_action_bt_node
@@ -156,6 +156,11 @@ controller_server:
       xy_goal_tolerance: 0.25
       trans_stopped_velocity: 0.25
       short_circuit_trajectory_evaluation: True
+      # The critics steer to the end of the path piece near the robot, which ends at the first pose
+      # this far away in a straight line (default 2.0, capped at half the local costmap = 1.5 m).
+      # When the path folds back past the robot (waypoint trajectories in small rooms), that end lay
+      # behind the robot and it turned in circles. 0.8 m keeps the end ahead along the path.
+      forward_prune_distance: 0.8
       stateful: True
       critics:
         [

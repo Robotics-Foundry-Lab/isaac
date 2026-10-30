@@ -1,0 +1,44 @@
+<!--
+  Based on nav2_bt_navigator/navigate_through_poses_w_replanning_and_recovery.xml, with the same
+  tuning as navigate_to_pose_aggressive.xml:
+  - more retries (10 instead of 6) and faster replanning (2 Hz instead of 0.33 Hz). The feature
+    manager drives waypoint trajectories by replacing the goal list while the robot drives; the
+    new list only takes effect with the next replanning, so 3 s were long enough to reach the end
+    of the old list and stop.
+  - passed waypoints are dropped on every replanning, so the faster rate also keeps the robot from
+    turning back to a waypoint it drove past between two replannings
+  - BackUp first and faster (0.25 m at 0.15 m/s instead of 0.30 m at 0.05 m/s)
+  - no Wait recovery, it only wastes time on a static scene
+-->
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <RecoveryNode number_of_retries="10" name="NavigateRecovery">
+      <PipelineSequence name="NavigateWithReplanning">
+        <RateController hz="2.0">
+          <RecoveryNode number_of_retries="1" name="ComputePathThroughPoses">
+            <ReactiveSequence>
+              <RemovePassedGoals input_goals="{goals}" output_goals="{goals}" radius="0.7"/>
+              <ComputePathThroughPoses goals="{goals}" path="{path}" planner_id="GridBased"/>
+            </ReactiveSequence>
+            <ClearEntireCostmap name="ClearGlobalCostmap-Context" service_name="global_costmap/clear_entirely_global_costmap"/>
+          </RecoveryNode>
+        </RateController>
+        <RecoveryNode number_of_retries="1" name="FollowPath">
+          <FollowPath path="{path}" controller_id="FollowPath"/>
+          <ClearEntireCostmap name="ClearLocalCostmap-Context" service_name="local_costmap/clear_entirely_local_costmap"/>
+        </RecoveryNode>
+      </PipelineSequence>
+      <ReactiveFallback name="RecoveryFallback">
+        <GoalUpdated/>
+        <RoundRobin name="RecoveryActions">
+          <Sequence name="ClearingActions">
+            <ClearEntireCostmap name="ClearLocalCostmap-Subtree" service_name="local_costmap/clear_entirely_local_costmap"/>
+            <ClearEntireCostmap name="ClearGlobalCostmap-Subtree" service_name="global_costmap/clear_entirely_global_costmap"/>
+          </Sequence>
+          <BackUp backup_dist="0.25" backup_speed="0.15"/>
+          <Spin spin_dist="1.57"/>
+        </RoundRobin>
+      </ReactiveFallback>
+    </RecoveryNode>
+  </BehaviorTree>
+</root>

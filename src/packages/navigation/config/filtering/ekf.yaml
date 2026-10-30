@@ -10,9 +10,11 @@ ekf_filter_node:
     world_frame: odom
 
     odom0: /odom_wheel
+    # vy (always 0 for a wheeled robot) is fused as well: without it nothing holds the lateral
+    # velocity at 0 once a VSLAM outlier corrupted it, and the EKF drifted sideways for meters
     odom0_config: [false, false, false,
                    false, false, false,
-                   true, false, false,
+                   true, true, false,
                    false, false, false,
                    false, false, false]
                    
@@ -27,9 +29,10 @@ ekf_filter_node:
     imu0_queue_size: 10
 
     odom1: /visual_slam/tracking/odometry
+    # No vy: VSLAM reports covariance 0 and spikes of >100 m/s when it loses tracking
     odom1_config: [false, false, false,
                    false, false, false,
-                   true, true, false,
+                   true, false, false,
                    false, false, true,
                    false, false, false]
                    

@@ -51,9 +51,12 @@ def add_optional_nodes(context, *args, **kwargs):
                     'mode': 'static',
                     'camera': camera_mode,
                     'num_cameras': 1,
+                    # Build the 3D map in the SLAM-corrected map frame so it lines up with the
+                    # 2D map; without slam_toolbox there is no map frame, so stay in odom
+                    'global_frame': 'map' if use_navigation else 'odom',
                 }))
-        
-        
+
+
     # Navigation
     if use_navigation:
         actions.append(

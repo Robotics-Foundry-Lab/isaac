@@ -50,6 +50,11 @@ def generate_launch_description():
 
                 # Odometry usage
                 'use_odometry': True,
+                # Penalize scan matches that deviate from odometry (score * 1 - 0.2 * d^2 / variance):
+                # with the defaults (0.5, 1.0) a 10 cm offset cost only 0.4 % and the pose jittered
+                # 5-15 cm back and forth. Now 10 cm cost ~7 %, 5 deg ~1.5 %.
+                'distance_variance_penalty': 0.03,
+                'angle_variance_penalty': 0.1,
 
                 # Scan buffering (helps recovery)
                 'scan_buffer_size': 80,

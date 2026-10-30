@@ -149,7 +149,7 @@ controller_server:
       decel_lim_theta: -3.2
       vx_samples: 20
       vtheta_samples: 20
-      sim_time: 1.0
+      sim_time: 1.7
       linear_granularity: 0.05
       angular_granularity: 0.025
       transform_tolerance: 0.2
@@ -194,10 +194,13 @@ local_costmap:
       width: 3
       height: 3
       resolution: 0.05
-      footprint: "[ [ 0.16,  0.105], [ 0.16, -0.105], [-0.16, -0.105], [-0.16,  0.105]]"
+      # 1.5 cm smaller per side than the real robot (0.32 x 0.21 m): it may touch walls, but gets
+      # through narrow passages and can still turn and back up close to walls (3 cm bounced off walls)
+      footprint: "[ [ 0.145,  0.09], [ 0.145, -0.09], [-0.145, -0.09], [-0.145,  0.09]]"
+      footprint_padding: 0.0
       mark_threshold: 2
       always_send_full_costmap: True
-      plugins: ['nvblox_layer', 'denoise_layer', 'inflation_layer']
+      plugins: ['nvblox_layer', 'obstacle_layer', 'inflation_layer']
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         enabled: True
@@ -209,12 +212,21 @@ local_costmap:
         nav2_costmap_global_frame: odom # must match with global_frame of local_costmap
         nvblox_map_slice_topic: "/nvblox_node/static_map_slice"
         convert_to_binary_costmap: True
-      # Removes lethal groups smaller than minimal_group_size cells (single nvblox voxels, 0.07 m)
-      denoise_layer:
-        plugin: "nav2_costmap_2d::DenoiseLayer"
+      # 360 deg lidar in addition to the camera, so reversing does not happen blind
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
         enabled: True
-        minimal_group_size: 5
-        group_connectivity_type: 8
+        observation_sources: scan
+        scan:
+          topic: /scan
+          max_obstacle_height: 2.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
+          raytrace_max_range: 3.0
+          raytrace_min_range: 0.0
+          obstacle_max_range: 2.5
+          obstacle_min_range: 0.2 # ignore hits on the robot itself (footprint circumradius ~0.19 m)
       static_layer:
         map_subscribe_transient_local: True
       always_send_full_costmap: True
@@ -233,7 +245,10 @@ global_costmap:
       global_frame: map
       robot_base_frame: base_link
       use_sim_time: False
-      footprint: "[[ 0.16,  0.105], [ 0.16, -0.105], [-0.16, -0.105], [-0.16,  0.105]]"
+      # 1.5 cm smaller per side than the real robot (0.32 x 0.21 m): it may touch walls, but gets
+      # through narrow passages and can still turn and back up close to walls (3 cm bounced off walls)
+      footprint: "[[ 0.145,  0.09], [ 0.145, -0.09], [-0.145, -0.09], [-0.145,  0.09]]"
+      footprint_padding: 0.0
       resolution: 0.05
       track_unknown_space: true
       plugins: ["static_layer", "obstacle_layer", "denoise_layer", "inflation_layer"]
@@ -262,8 +277,8 @@ global_costmap:
         group_connectivity_type: 8
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 5.0
-        inflation_radius: 0.3
+        cost_scaling_factor: 3.0
+        inflation_radius: 0.45 # keeps the global path away from walls
       always_send_full_costmap: True
   global_costmap_client:
     ros__parameters:
@@ -302,8 +317,11 @@ planner_server_rclcpp_node:
 
 behavior_server:
   ros__parameters:
-    costmap_topic: local_costmap/costmap_raw
-    footprint_topic: local_costmap/published_footprint
+    # Collision checks of spin/backup run on the global costmap (360 deg lidar + slam map) instead
+    # of the local one: the local costmap only sees what the camera saw and can show a wall
+    # overlapping the robot, which makes every recovery abort immediately.
+    costmap_topic: global_costmap/costmap_raw
+    footprint_topic: global_costmap/published_footprint
     cycle_frequency: 10.0
     behavior_plugins: ["spin", "backup", "drive_on_heading", "wait"]
     spin:
@@ -314,7 +332,7 @@ behavior_server:
       plugin: "nav2_behaviors/DriveOnHeading"
     wait:
       plugin: "nav2_behaviors/Wait"
-    global_frame: odom
+    global_frame: map # must match the frame of costmap_topic
     robot_base_frame: base_link
     transform_timeout: 0.1
     use_sim_time: False

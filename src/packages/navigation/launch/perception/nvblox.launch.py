@@ -119,6 +119,7 @@ def add_nvblox(args: lu.ArgumentContainer) -> List[Action]:
     parameters.append(camera_config)
     parameters.append({'num_cameras': num_cameras})
     parameters.append({'use_lidar': use_lidar})
+    parameters.append({'global_frame': args.global_frame})
 
     # Add the nvblox node.
     nvblox_node = ComposableNode(
@@ -147,6 +148,7 @@ def generate_launch_description() -> LaunchDescription:
     args.add_arg('camera')
     args.add_arg('num_cameras', 1)
     args.add_arg('lidar', 'False')
+    args.add_arg('global_frame', 'odom')
     args.add_arg('container_name', NVBLOX_CONTAINER_NAME)
     args.add_arg('run_standalone', 'False')
 
